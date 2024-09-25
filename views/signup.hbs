@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-md">
+    <div class="container">
+        <a href="#shopsy" class="navbar-brand">Shopsy</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="nav navbar-nav">
+                <li class="nav-item"><a href="#shop" class="nav-link">Shop</a></li>
+                <li class="nav-item"><a href="#Man" class="nav-link">Men</a></li>
+                <li class="nav-item"><a href="#women" class="nav-link">Women</a></li>
+                <li class="nav-item"><a href="#wishlist" class="nav-link">Wishlist</a></li>
+                <li class="nav-item">
+                    <input type="search" placeholder="Search for products" class="form-control">
+                </li>
+                <li class="nav-item">
+                    <a href="/user/user_signup" class="nav-link"><i class="fa-solid fa-user"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section>
+    <div class="container">
+        <div class="content m-auto p-4">
+            <h4 class="secondary-h">Signup</h4>
+            <p class="intro">Create an account so you can order your favorite products easly and quickly</p>
+            <form action="/user/user_signup" method="post">
+                <input type="text" class="form-control mb-3" placeholder="Name" id="name-user" name="user_name">
+                <input type="email" class="form-control mb-3" placeholder="email" id="email-user" name="user_email">
+                <input type="tel" class="form-control mb-3" placeholder="Phone" id="phone-user" name="user_phone">
+                <input type="password" class="form-control mb-3" placeholder="Password" id="password-user" name="user_password">
+                <button class="btn form-control mb-3" id="signup-btn" type="submit">Register Now</button>
+                <p class="text-center">Or continue with</p>
+                <div class="sos-auth d-flex justify-content-between gap-3">
+                    <a href="#google" class="btn btn-danger form-control">Google</a>
+                    <a href="" class="btn btn-info form-control">Facebook</a>
+                </div>
+                <p class="info mt-4 text-center">Already have an account? <a href="#" class="">Login</a></p>
+            </form>
+        </div>
+    </div>
+</section>
