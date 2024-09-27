@@ -2,6 +2,7 @@ const express = require('express')
 const hbs = require('hbs')
 const db = require('mongoose')
 const bodyParser = require('body-parser')
+const session = require('express-session')
 // const bcrypt = require('bcrypt')
 const userRouter = require('./routes/users.js')
 const PORT = 5000
@@ -14,6 +15,15 @@ app.set('views', './views')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
+app.use(session({
+    secret:'mXplo454ra',
+    resave:false,
+    saveUninitialized:false,
+    cookie:{
+        httpOnly:true,
+        sameSite:'strict'
+    }
+}))
 
 app.use('/', userRouter)
 
