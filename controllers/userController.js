@@ -45,7 +45,15 @@ async function sendEmail(email, otp){
     } catch (error) {
         console.log(error.message)
     }
-    
+}
+
+async function resendOTP(req, res) {
+    const user = req.query.user
+    const otp = generateOTP()
+    await sendEmail(user, otp)
+    req.session.tempUserData.otp = otp
+    req.session.tempUserData.otpSentTimeStamp = new Date()
+    res.render('email_verify',{user})
 }
 
 
@@ -61,8 +69,8 @@ const signup = async (req, res) => {
         const {user_name, user_email, user_phone, user_password} = req.body
         const otp = generateOTP()
         await sendEmail(user_email, otp)
-        const otpTimestamp = new Date()
         req.session.tempUserData = {user_name, user_email, user_phone, user_password, otp}
+        req.session.tempUserData.otpSentTimeStamp = new Date()
         console.log(req.session.tempUserData)
         res.redirect(`/verify_email?user_email=${encodeURIComponent(user_email)}`)
 }
@@ -72,14 +80,23 @@ const loadLogin = (req, res) => {
 }
 
 const loadVerificationPage = (req, res) => {
-    res.render('email_verify')
+    const user = req.session.tempUserData.user_email
+    res.render('email_verify', {user})
 }
 
 const emailVerification = async (req, res) => {
     const {otp} = req.body
+    const otpSubmissionTimeStamp = new Date()
     const tempUser = req.session.tempUserData
-    console.log(tempUser)
-    if(otp === tempUser.otp){
+    const {user_email} = tempUser
+    // console.log(typeof otpSentTimeStamp)
+    const otpSentTimeStamp = new Date(tempUser.otpSentTimeStamp)
+    const difference = (otpSubmissionTimeStamp.getTime() - otpSentTimeStamp.getTime()) / 1000
+    console.log(difference)
+    if(difference > 30){
+        res.render('email_verify', {user:user_email, message:'OTP has expired'})
+    }else{
+        if(otp === tempUser.otp){
         console.log('OTP verifed successfully!')
         // res.send('Email verified')
         const hashedPassword = await bcrypt.hash(tempUser.user_password, 10)
@@ -87,7 +104,9 @@ const emailVerification = async (req, res) => {
             name:tempUser.user_name,
             email:tempUser.user_email,
             phone:tempUser.user_phone,
-            password:hashedPassword
+            password:hashedPassword,
+            status:true,
+            createdAt: new Date()
         }
         
         try {
@@ -97,8 +116,9 @@ const emailVerification = async (req, res) => {
         }
         req.session.tempUserData = null
         res.redirect('/')
-    }else{
-        res.render('email_verify', {message:'Invalid OTP, please retry'})
+        }else{
+        res.render('email_verify', {user:user_email, message:'Invalid OTP, please retry'})
+        }
     }
 }
 
@@ -107,7 +127,7 @@ module.exports = {
     loadSignup,
     signup,
     loadLogin,
-    // requestOtp,
+    resendOTP,
     emailVerification,
     loadVerificationPage
 }

@@ -16,6 +16,14 @@ const usersSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    status:{
+        type:Boolean,
+        required:true
+    },
+    createdAt:{
+        type:Date,
+        required:true
     }
 })
 

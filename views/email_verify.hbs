@@ -4,4 +4,6 @@
 <form action="/verify_email" method="post">
     <input type="text" id="otp_email" name="otp">
     <button type="submit" class="btn btn-info d-block">Verify</button>
+    <a href="/resend_otp?user={{user}}" class="btn btn-success">Resend OTP</a>
+    <p class="text-danger">The OTP is only valide for 2 minutes</p>
 </form>

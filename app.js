@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 // const bcrypt = require('bcrypt')
 const userRouter = require('./routes/users.js')
+const adminRouter = require('./routes/admin.js')
 const PORT = 5000
 
 const app = express()
@@ -26,6 +27,7 @@ app.use(session({
 }))
 
 app.use('/', userRouter)
+app.use('/', adminRouter)
 
 db.connect('mongodb://127.0.0.1:27017/shopsy')
     .then(() => {
