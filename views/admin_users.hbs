@@ -1,0 +1,107 @@
+<div class="container-fluid" id="main-container">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-2 lg-3 bg-white">
+            <div class="min-vh-100 flex-column">
+                <div class="d-flex justify-content-start justify-content-sm-center">
+                    <a href="/" class="text-dark fs-5 fw-bold text-decoration-none">Shopsy</a>
+                </div>
+                <ul class="nav nav-pills d-flex flex-column list-unstyled gap-4 mt-4">
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark"><i class="fa-solid fa-bars"> Dashboard</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark"><i class="fa-solid fa-box"> Products</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-light bg-dark active" aria-current="page"><i class="fa-solid fa-users"> Users</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark"><i class="fa-solid fa-cart-shopping"> Orders</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark"><i class="fa-solid fa-paper"> Sales Report</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark"><i class="fa-solid fa-star"> Marketign Tools</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark"><i class="fa-solid fa-box"> Returns</i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-stripped">
+                    <thead>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Registered</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr>
+                            <td>#</td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.phone}}</td>
+                            <td>{{this.email}}</td>
+                            <td>{{this.createdAt}}</td>
+                            {{#if this.status}}
+                                <td style="color: green;">Active</td>
+                            {{else}}
+                                <td style="color: red;">Blocked</td>
+                            {{/if}}
+                            <td>
+                                <button onclick="getDetails('{{this._id}}','{{this.email}}','{{this.status}}')" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editUserModal">Edit <i class="fa-solid fa-pencil"></i></button>
+                                <a href="/" class="btn btn-danger">Delete <i class="fa-solid fa-bin"></i></a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <div class="modal fade" id="editUserModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Update User Status</h4>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/admin_panel/customers" method="post">
+                                    <div class="user-details">
+                                        <label>User Id : </label> <input type="text" id="user_id" name="user_id" readonly>
+                                    </div>
+                                    <div class="user-details">
+                                        <label>User Email : </label> <input type="text" id="user_email" name="user_email" readonly>
+                                    </div>
+                                    <label for="user_status">Current Status of the user : <span id="status"></span></label>
+                                    <select class="d-block mt-3 mb-3" name="user_status" id="status">
+                                        <option value="true">Unblock</option>
+                                        <option value="false">Block</option>
+                                    </select>
+                                    <button class="btn btn-info" type="button" data-bs-dismiss="modal">Cancel</button> <button class="btn btn-success" type="submit">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getDetails(userId, userEmail, userStatus){
+        document.getElementById('user_id').value = userId
+        document.getElementById('user_email').value = userEmail
+        if(userStatus){
+            document.getElementById('status').innerHTML = 'Active'
+        }else{
+            document.getElementById('status').innerHTML = 'Blocked'
+        }
+        
+    }
+</script>
